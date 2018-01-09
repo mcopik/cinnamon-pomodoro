@@ -75,6 +75,19 @@
         "default" : true
     },
 
+    "enable_logging": {
+        "type": "checkbox",
+        "default": false,
+        "description": "Save productivity log"
+    },
+
+    "logging_output_dir": {
+        "type": "filechooser",
+        "default": "~/.local/share/cinnamon/applets",
+        "description": "Logging directory",
+        "select-dir": true
+    },
+
     "head_sounds": {
         "type": "header",
         "description": "Sounds"

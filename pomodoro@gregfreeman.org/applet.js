@@ -84,6 +84,8 @@ PomodoroApplet.prototype = {
         this._opt_playStartSound = null;
         this._opt_startSoundPath = null;
         this._opt_startSoundVolume = null;
+        this._opt_enableLogging = null;
+        this._opt_loggingOutputDir = null;
 
         this._settingsProvider = new Settings.AppletSettings(this, metadata.uuid, instanceId);
         this._bindSettings();
@@ -200,6 +202,20 @@ PomodoroApplet.prototype = {
         	"show_timer",
         	"_opt_showTimerInPanel",
         	this._onShowTimerChanged
+        );
+
+        this._settingsProvider.bindProperty(
+            Settings.BindingDirection.IN,
+            "enable_logging",
+            "_opt_enableLogging",
+            emptyCallback
+        );
+
+        this._settingsProvider.bindProperty(
+            Settings.BindingDirection.IN,
+            "logging_output_dir",
+            "_opt_loggingOutputDir",
+            emptyCallback
         );
 
         this._settingsProvider.bindProperty(
