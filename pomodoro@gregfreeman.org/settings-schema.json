@@ -83,7 +83,7 @@
 
     "logging_output_dir": {
         "type": "filechooser",
-        "default": "~/.local/share/cinnamon/applets",
+        "default": "~/.local/share/cinnamon/applets/pomodoro@gregfreeman.org",
         "description": "Logging directory",
         "select-dir": true
     },

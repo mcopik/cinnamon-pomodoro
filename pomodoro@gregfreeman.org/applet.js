@@ -8,6 +8,7 @@ const PopupMenu = imports.ui.popupMenu;
 const Settings = imports.ui.settings;
 const Util = imports.misc.util;
 const GLib = imports.gi.GLib;
+const Gio = imports.gi.Gio;
 
 const UUID = "pomodoro@gregfreeman.org";
 
@@ -471,6 +472,30 @@ PomodoroApplet.prototype = {
             this._appletMenu.showPomodoroInProgress(this._opt_pomodoriNumber);
             Main.notify(_("Take a short break"));
             this.set_applet_tooltip(_("Short break running"));
+
+            global.log(this._opt_enableLogging);
+            if (this._opt_enableLogging) {
+                var right_now = new Date();
+                var day = right_now.getDate();
+                var month = right_now.getMonth() + 1;
+                var year = right_now.getFullYear();
+                // first save the starting time of the last finished pomodoro
+                // the CSV file has columns:
+                // type | hour | minute | second | length
+                global.log(this._opt_loggingOutputDir + "/pomodoro_log_" + [year, month, day].join("_"));
+                global.log(Gio.file_parse_name("~/s"));
+                var f = Gio.file_new_for_path(Gio.file_parse_name(this._opt_loggingOutputDir + "/pomodoro_log_" + [year, month, day].join("_")).get_path());
+                try {
+                    var stream = f.append_to(Gio.FileCreateFlags.NONE, null);
+                    var data = ["pomodoro", right_now.getHours(), right_now.getMinutes(), right_now.getSeconds(), this._opt_pomodoroTimeMinutes];
+                    stream.write(data.join(",") + "\n", null);
+                    global.log(data.join(",") + "\n");
+                    stream.close(null);
+                } catch(err) {
+                    global.log("Pomodor logging failed");
+                    global.log(err);
+                }
+            }
         }));
 
         longBreakTimer.connect('timer-started', Lang.bind(this, function() {
