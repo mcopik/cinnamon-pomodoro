@@ -482,10 +482,14 @@ PomodoroApplet.prototype = {
                 // first save the starting time of the last finished pomodoro
                 // the CSV file has columns:
                 // type | hour | minute | second | length
-                global.log(this._opt_loggingOutputDir + "/pomodoro_log_" + [year, month, day].join("_"));
-                global.log(Gio.file_parse_name("~/s"));
-                var f = Gio.file_new_for_path(Gio.file_parse_name(this._opt_loggingOutputDir + "/pomodoro_log_" + [year, month, day].join("_")).get_path());
                 try {
+                    let spawn_flags = GLib.SpawnFlags.SEARCH_PATH;
+                    let [success, hostname] = GLib.spawn_sync(null, ["hostname"], null, spawn_flags, null);
+                    // remove the newline
+                    // https://stackoverflow.com/questions/3195865/converting-byte-array-to-string-in-javascript
+                    hostname = String.fromCharCode.apply(null, hostname).trim();
+
+                    var f = Gio.file_new_for_path(Gio.file_parse_name(this._opt_loggingOutputDir + "/pomodoro_log_" + [year, month, day, hostname].join("_")).get_path());
                     var stream = f.append_to(Gio.FileCreateFlags.NONE, null);
                     var data = ["pomodoro", right_now.getHours(), right_now.getMinutes(), right_now.getSeconds(), this._opt_pomodoroTimeMinutes];
                     stream.write(data.join(",") + "\n", null);
