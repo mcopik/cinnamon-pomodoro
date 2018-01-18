@@ -473,7 +473,6 @@ PomodoroApplet.prototype = {
             Main.notify(_("Take a short break"));
             this.set_applet_tooltip(_("Short break running"));
 
-            global.log(this._opt_enableLogging);
             if (this._opt_enableLogging) {
                 var right_now = new Date();
                 var day = right_now.getDate();
@@ -488,7 +487,6 @@ PomodoroApplet.prototype = {
                     // remove the newline
                     // https://stackoverflow.com/questions/3195865/converting-byte-array-to-string-in-javascript
                     hostname = String.fromCharCode.apply(null, hostname).trim();
-
                     var f = Gio.file_new_for_path(Gio.file_parse_name(this._opt_loggingOutputDir + "/pomodoro_log_" + [year, month, day, hostname].join("_")).get_path());
                     var stream = f.append_to(Gio.FileCreateFlags.NONE, null);
                     var data = ["pomodoro", right_now.getHours(), right_now.getMinutes(), right_now.getSeconds(), this._opt_pomodoroTimeMinutes];
